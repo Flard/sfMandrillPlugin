@@ -22,7 +22,7 @@ abstract class PluginInboundEmail extends BaseInboundEmail
         $email->html = $mandrillApiEvent->msg->html;
         $email->from_email = $mandrillApiEvent->msg->from_email;
         $email->from_name = $mandrillApiEvent->msg->from_name;
-        $email->to = $mandrillApiEvent->msg->to;
+        $email->recipients = $mandrillApiEvent->msg->to;
         $email->email = $mandrillApiEvent->msg->email;
         $email->subject = $mandrillApiEvent->msg->subject;
 
