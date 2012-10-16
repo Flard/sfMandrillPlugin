@@ -1,0 +1,4 @@
+InboundEmail:
+  columns:
+    id:         { type: integer, primary: true, autoincrement: true }
+    subject:    { type: string(200), notnull: true }
