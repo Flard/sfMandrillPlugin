@@ -1,4 +1,39 @@
 InboundEmail:
   columns:
     id:         { type: integer, primary: true, autoincrement: true }
-    subject:    { type: string(200), notnull: true }
+
+    # Mandrill fields
+    received_at:{ type: timestamp, notnull: true }
+    raw_msg:    { type: clob, notnull: true } # the full content of the received message, including headers and content
+    #headers:    { type: clob, notnull: false } # an array of the headers received for the message, such as 'Dkim-Signature', 'Mime-version', 'Date', 'Message-Id', etc.
+    text:       { type: clob, notnull: false } # the text version of the message
+    html:       { type: clob, notnull: false } # the HTML version of the message
+    from_email: { type: string(200), notnull: true } # the from email address for the message
+    from_name:  { type: string(200), notnull: false } # the from name for the message
+    to:         { type: string(200), notnull: true } # the recipients of the message, and their names
+    email:      { type: string(200), notnull: true } # the email address where Mandrill received the message
+    subject:    { type: string(200), notnull: true } # the subject line of the message
+
+    is_processed: { type: boolean, notnull: true, default: false }
+
+InboundEmailHeader:
+  columns:
+    id:         { type: integer, primary: true, autoincrement: true }
+    email_id:   { type: integer, notnull: true }
+    name:       { type: string(200), notnull: true }
+    value:      { type: string(200), notnull: true }
+  relations:
+    InboundEmail: { local: email_id, foreign: id, foreignAlias: Headers}
+
+
+InboundEmailAttachment:
+  columns:
+    id:         { type: integer, primary: true, autoincrement: true }
+    email_id:   { type: integer, notnull: true }
+
+    name:       { type: string(200), notnull: true }
+    mime_type:  { type: string(100), notnull: true }
+    content:    { type: blob }
+  relations:
+    InboundEmail: { local: email_id, foreign: id, foreignAlias: Attachments }
+
