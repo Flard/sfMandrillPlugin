@@ -40,7 +40,9 @@ class sfMandrillMailer
         $data['message'] = $email->getMessageDataObject();
 
         if ($email->hasTemplate()) {
-            $endpoint = '/messages/send.json';
+            $endpoint = '/messages/send-template.json';
+            $data['template_name'] = $email->template_name;
+            $data['template_content'] = json_decode($email->template_content);
         } else {
             $endpoint = '/messages/send.json';
         }
@@ -59,7 +61,10 @@ class sfMandrillMailer
         );
 
         $result = curl_exec($ch);
-        var_dump($result);
-        die();
+
+
+//        var_dump($result);
+//        die();
+        return true;
     }
 }

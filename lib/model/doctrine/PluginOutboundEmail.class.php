@@ -92,6 +92,29 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
         return $this;
     }
 
+    public function setTrackClicks($enable) {
+        $this->getMessageDataObject()->track_clicks = $enable;
+        return $this;
+    }
+
+    public function setGlobalMergeVars($vars) {
+        $this->getMessageDataObject()->global_merge_vars = array();
+        foreach($vars as $name => $content) {
+            $this->getMessageDataObject()->global_merge_vars[] = array('name' => $name, 'content' => $content);
+        }
+        return $this;
+    }
+
+    public function setTemplateName($name) {
+        $this->template_name = $name;
+        return $this;
+    }
+
+    public function setTemplateVars($vars) {
+        $this->template_content = json_encode($vars);
+        return $this;
+    }
+
     public function preSave($event) {
         if (empty($this->token)) {
             $this->generateToken();
@@ -112,6 +135,6 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
     }
 
     public function hasTemplate() {
-        return false;
+        return !empty($this->template_name);
     }
 }
