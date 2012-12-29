@@ -37,3 +37,16 @@ InboundEmailAttachment:
   relations:
     InboundEmail: { local: email_id, foreign: id, foreignAlias: Attachments }
 
+OutboundEmail:
+  columns:
+    id:           { type: integer, primary: true, autoincrement: true }
+    message_data: { type: clob, notnull: true }
+    template_name: { type: string(100), notnull: false }
+    template_content: { type: clob, notnull: false }
+    token:        { type: string(50), notnull: true }
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
+    SoftDelete:
+      name: sent_at
