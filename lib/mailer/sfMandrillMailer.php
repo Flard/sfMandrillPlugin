@@ -34,8 +34,8 @@ class sfMandrillMailer
         return $this->getSpool()->flushQueue();
     }
 
-    public function send(OutboundEmail $email) {
-        $data = array('key' => $this->options['api_key'], 'async' => false);
+    public function send(OutboundEmail $email, $async = false) {
+        $data = array('key' => $this->options['api_key'], 'async' => $async);
 
         $data['message'] = $email->getMessageDataObject();
 
@@ -67,4 +67,5 @@ class sfMandrillMailer
 //        die();
         return true;
     }
+
 }

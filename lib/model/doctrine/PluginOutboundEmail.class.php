@@ -41,18 +41,48 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
         return $this;
     }
 
-    public function addTo($emailAddress, $name = null) {
+    public function addTo($emailAddress, $name = null, $mergeVars = null) {
 
         if (!isset($this->getMessageDataObject()->to)) {
-            return $this->setTo($emailAddress, $name);
+            $this->setTo($emailAddress, $name, $mergeVars);
+            if (!empty($mergeVars)) {
+                $this->setMergeVars($emailAddress, $mergeVars);
+            }
+            return $this;
         }
         $to = array("email" => $emailAddress);
         if (!empty($name)) {
             $to['name'] = $name;
         }
         $this->getMessageDataObject()->to[] = $to;
+
+        if (!empty($mergeVars)) {
+            $this->setMergeVars($emailAddress, $mergeVars);
+        }
+
         return $this;
     }
+
+    public function setMergeVars($recipient, $mergeVars) {
+
+        if (!isset($this->getMessageDataObject()->merge_vars)); {
+            $this->getMessageDataObject()->mergeVars = array();
+        }
+
+        $translatedMergeVars = array();
+        foreach($mergeVars as $name => $content) {
+            $translatedMergeVars[] = array('name' => $name, 'content' => $content);
+        }
+
+        $this->getMessageDataObject()->mergeVars[] = array(
+            'rcpt' => $recipient,
+            'vars' => $translatedMergeVars
+        );
+
+        return $this;
+
+    }
+
 
     public function addHeader($key, $value) {
         $this->getMessageData()->headers->$key = $value;
