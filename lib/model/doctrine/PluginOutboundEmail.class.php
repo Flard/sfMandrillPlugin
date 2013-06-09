@@ -66,7 +66,7 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
     public function setMergeVars($recipient, $mergeVars) {
 
         if (!isset($this->getMessageDataObject()->merge_vars)); {
-            $this->getMessageDataObject()->mergeVars = array();
+            $this->getMessageDataObject()->merge_vars = array();
         }
 
         $translatedMergeVars = array();
@@ -74,7 +74,7 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
             $translatedMergeVars[] = array('name' => $name, 'content' => $content);
         }
 
-        $this->getMessageDataObject()->mergeVars[] = array(
+        $this->getMessageDataObject()->merge_vars[] = array(
             'rcpt' => $recipient,
             'vars' => $translatedMergeVars
         );
