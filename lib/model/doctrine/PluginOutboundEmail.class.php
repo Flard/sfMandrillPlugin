@@ -44,12 +44,19 @@ abstract class PluginOutboundEmail extends BaseOutboundEmail
     public function addTo($emailAddress, $name = null, $mergeVars = null) {
 
         if (!isset($this->getMessageDataObject()->to)) {
-            $this->setTo($emailAddress, $name, $mergeVars);
+            // First `to` address
+
+            // Set to
+            $this->setTo($emailAddress, $name);
+
+            // add merge vars
             if (!empty($mergeVars)) {
                 $this->setMergeVars($emailAddress, $mergeVars);
             }
+
             return $this;
         }
+
         $to = array("email" => $emailAddress);
         if (!empty($name)) {
             $to['name'] = $name;
